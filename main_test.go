@@ -1,7 +1,6 @@
-package tests
+package main
 
 import (
-	"github.com/Vivirinter/InfluxDB-VK-API/cmd/main"
 	"github.com/stretchr/testify/mock"
 	"reflect"
 	"testing"
@@ -11,7 +10,7 @@ type MockedMethodCall struct {
 	mock.Mock
 }
 
-func (m *MockedMethodCall) CallMethod(method string, options main.Options, config main.VkConfig) (string, error) {
+func (m *MockedMethodCall) CallMethod(method string, options Options, config VkConfig) (string, error) {
 	args := m.Called(method, options, config)
 	return args.String(0), args.Error(1)
 }
@@ -19,10 +18,10 @@ func (m *MockedMethodCall) CallMethod(method string, options main.Options, confi
 func TestMethodCall(t *testing.T) {
 	mockObj := new(MockedMethodCall)
 	mockMethod := "groups.getById"
-	mockOptions := main.Options{
+	mockOptions := Options{
 		"group_id": {"12345"},
 	}
-	mockConfig := main.VkConfig{
+	mockConfig := VkConfig{
 		Token:   "token",
 		GroupId: "groupId",
 		Version: "5.199",
